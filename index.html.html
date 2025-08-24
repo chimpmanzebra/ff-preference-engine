@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF Preference Engine 2025 - Peerwave AI Integration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a365d 0%, #2d543e 50%, #744210 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .ai-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin: 0 auto;
+            max-width: 400px;
+            font-size: 0.9rem;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #51cf66;
+            transition: all 0.3s ease;
+        }
+
+        .status-indicator.loading {
+            background: #ffd93d;
+            animation: pulse 1s infinite;
+        }
+
+        .status-indicator.error {
+            background: #ff6b6b;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .phase-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 10px;
+        }
+
+        .phase-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .phase-dot.active {
+            background: #4facfe;
+            transform: scale(1.3);
+        }
+
+        .phase-dot.complete {
+            background: #51cf66;
+        }
+
+        .phase-content {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Setup Phase */
+        .setup-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .setup-section h3 {
+            margin-bottom: 15px;
+            color: #4facfe;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group select, .form-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 14px;
+        }
+
+        .form-group select option {
+            background: #1a365d;
+            color: white;
+        }
+
+        .consensus-highlight {
+            background: rgba(79, 172, 254, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            border: 1px solid rgba(79, 172, 254, 0.3);
+        }
+
+        /* AI Analysis Section */
+        .ai-analysis {
+            background: rgba(255, 212, 59, 0.1);
+            border: 1px solid rgba(255, 212, 59, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .ai-analysis h3 {
+            color: #ffd93d;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .streaming-text {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 15px;
+            min-height: 100px;
+            border-left: 4px solid #ffd93d;
+            margin-bottom: 15px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        .typing-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ffd93d;
+            animation: pulse 1s infinite;
+            margin-left: 5px;
+        }
+
+        /* Calibration Phase */
+        .scenario-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .scenario-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .draft-context {
+            background: rgba(79, 172, 254, 0.3);
+            padding: 12px 20px;
+            border-radius: 15px;
+            font-size: 0.95rem;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .adp-info {
+            background: rgba(255,255,255,0.08);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .player-comparison {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .player-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .player-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(79, 172, 254, 0.5);
+        }
+
+        .player-card.selected {
+            border-color: #4facfe;
+            background: rgba(79, 172, 254, 0.2);
+        }
+
+        .player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .player-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .adp-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+        }
+
+        .player-team {
+            color: #a0a0a0;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+
+        .key-stats {
+            background: rgba(255,255,255,0.05);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .key-stats-title {
+            font-size: 0.8rem;
+            color: #4facfe;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            font-size: 0.8rem;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 0;
+        }
+
+        .stat-label {
+            color: #b0b0b0;
+        }
+
+        .stat-value {
+            font-weight: 500;
+        }
+
+        .vs-divider {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4facfe;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.1);
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #4facfe 0%, #51cf66 100%);
+            height: 100%;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-center {
+            display: block;
+            margin: 20px auto;
+        }
+
+        .skip-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 16px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin: 10px auto;
+            display: block;
+        }
+
+        /* Reports */
+        .report-section {
+            margin-bottom: 30px;
+        }
+
+        .report-section h3 {
+            color: #4facfe;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .insight-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4facfe;
+        }
+
+        @media (max-width: 768px) {
+            .setup-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .player-comparison {
+                grid-template-columns: 1fr;
+            }
+            
+            .vs-divider {
+                text-align: center;
+                margin: 15px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>2025 Fantasy Preference Engine</h1>
+            <p>Realistic Draft Decisions • AI-Powered Analysis • Cross-Position Pattern Matching</p>
+            <div class="ai-status">
+                <div class="status-indicator" id="aiStatus"></div>
+                <span id="aiStatusText">Peerwave AI Connected</span>
+            </div>
+        </div>
+
+        <div class="phase-indicator">
+            <div class="phase-dot active" data-phase="0"></div>
+            <div class="phase-dot" data-phase="1"></div>
+            <div class="phase-dot" data-phase="2"></div>
+            <div class="phase-dot" data-phase="3"></div>
+        </div>
+
+        <!-- Phase 1: League Setup -->
+        <div id="phase-setup" class="phase-content">
+            <h2>League Setup</h2>
+            
+            <div class="consensus-highlight">
+                <h3>🔬 AI-Enhanced Draft Analysis</h3>
+                <p><strong>Powered by Peerwave AI</strong> - Real-time analysis of your draft decisions</p>
+                <p><strong>Pattern Recognition:</strong> Identifies statistical blind spots and cross-position preferences</p>
+                <p><strong>Personalized Recommendations:</strong> Get AI-generated player matches based on your revealed preferences</p>
+            </div>
+
+            <div class="setup-grid">
+                <div class="setup-section">
+                    <h3>⚖️ League Settings</h3>
+                    <div class="form-group">
+                        <label>Scoring Format</label>
+                        <select id="pprFormat">
+                            <option value="standard">Standard (0 PPR)</option>
+                            <option value="half" selected>Half PPR (0.5)</option>
+                            <option value="full">Full PPR (1.0)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Team Size</label>
+                        <select id="teamCount">
+                            <option value="8">8 teams</option>
+                            <option value="10" selected>10 teams</option>
+                            <option value="12">12 teams</option>
+                            <option value="14">14 teams</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Draft Platform</label>
+                        <select id="draftPlatform">
+                            <option value="espn" selected>ESPN</option>
+                            <option value="yahoo">Yahoo Fantasy</option>
+                            <option value="sleeper">Sleeper</option>
+                            <option value="consensus">FantasyPros Consensus</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="setup-section">
+                    <h3>🏈 Roster Format</h3>
+                    <div class="form-group">
+                        <label>Starting RB</label>
+                        <select id="startingRB">
+                            <option value="1">1 RB</option>
+                            <option value="2" selected>2 RB</option>
+                            <option value="3">3 RB</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Starting WR</label>
+                        <select id="startingWR">
+                            <option value="2" selected>2 WR</option>
+                            <option value="3">3 WR</option>
+                            <option value="4">4 WR</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Flex Positions</label>
+                        <select id="flexPositions">
+                            <option value="1" selected>1 Flex (RB/WR/TE)</option>
+                            <option value="2">2 Flex</option>
+                            <option value="0">No Flex</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn btn-center" onclick="startCalibration()">Begin AI-Enhanced Calibration</button>
+        </div>
+
+        <!-- Phase 2: Calibration -->
+        <div id="phase-calibration" class="phase-content hidden">
+            <h2>Draft Decision Calibration</h2>
+            <div class="progress-bar">
+                <div class="progress-fill" id="calibrationProgress"></div>
+            </div>
+            <p style="text-align: center; margin-bottom: 20px;">
+                Decision <span id="currentQuestion">1</span> of <span id="totalQuestions">15</span>
+            </p>
+            
+            <div id="scenarioContainer">
+                <!-- Scenarios will be populated here -->
+            </div>
+
+            <!-- AI Analysis during calibration -->
+            <div class="ai-analysis" id="aiAnalysisSection" style="display: none;">
+                <h3>🧠 Live AI Analysis <span class="typing-indicator"></span></h3>
+                <div class="streaming-text" id="aiStreamingText">Analyzing your draft preferences in real-time...</div>
+            </div>
+        </div>
+
+        <!-- Phase 3: Analysis Report -->
+        <div id="phase-report" class="phase-content hidden">
+            <h2>Your AI-Generated Fantasy Draft DNA</h2>
+            
+            <div class="ai-analysis">
+                <h3>🤖 Peerwave AI Complete Analysis</h3>
+                <div class="streaming-text" id="finalAiAnalysis">
+                    Generating comprehensive draft analysis...
+                </div>
+            </div>
+
+            <div class="report-section">
+                <h3>🧬 Statistical Preferences & Blind Spots</h3>
+                <div id="analysisInsights">
+                    <!-- Analysis insights will be populated here -->
+                </div>
+            </div>
+
+            <div class="report-section">
+                <h3>🎯 AI-Recommended Players</h3>
+                <p style="text-align: center; margin-bottom: 20px; color: #a0a0a0;">
+                    Based on AI analysis of your statistical preferences
+                </p>
+                <div id="playerMatches">
+                    <!-- Player matches will be populated here -->
+                </div>
+            </div>
+
+            <button class="btn btn-center" onclick="enterDraftMode()">Enter AI Draft Assistant Mode</button>
+        </div>
+
+        <!-- Phase 4: Draft Assistant -->
+        <div id="phase-draft" class="phase-content hidden">
+            <h2>Live AI Draft Assistant</h2>
+            <p style="text-align: center; margin-bottom: 20px;">
+                Real-time AI recommendations based on your discovered preferences
+            </p>
+            
+            <div class="ai-analysis">
+                <h3>🎯 Live Draft AI Analysis</h3>
+                <div class="streaming-text" id="draftAiAnalysis">
+                    Add players to see AI-powered recommendations...
+                </div>
+            </div>
+            
+            <div class="setup-grid">
+                <div>
+                    <h3>Current Team</h3>
+                    <div id="currentTeam">
+                        <p style="text-align: center; color: #a0a0a0; margin: 20px 0;">
+                            No players drafted yet
+                        </p>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>AI Recommendations</h3>
+                    <div id="recommendations">
+                        <p style="text-align: center; color: #a0a0a0; margin: 20px 0;">
+                            Start drafting to see AI recommendations
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <input type="text" id="playerSearch" placeholder="Add drafted player..." 
+                       style="width: 300px; padding: 10px; margin-right: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: white;">
+                <button class="btn" onclick="addDraftedPlayer()">Add Player & Get AI Analysis</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // App State
+        let currentPhase = 0;
+        let leagueSettings = {};
+        let calibrationData = [];
+        let currentScenario = 0;
+        let userPreferences = {};
+        let scenarios = [];
+        let usedPlayerPairs = new Set();
+
+        // Peerwave AI Integration
+        class PeerwaveAI {
+            constructor() {
+                this.isStreaming = false;
+            }
+
+            getToken() {
+                const hashParams = new URLSearchParams(window.location.hash.substring(1));
+                return hashParams.get("token");
+            }
+
+            async streamAnalysis(prompt, onChunk, onComplete = null, onError = null) {
+                if (this.isStreaming) return;
+                
+                this.isStreaming = true;
+                this.updateAIStatus('loading', 'AI Analysis in Progress...');
+
+                const headers = {
+                    "Content-Type": "application/json",
+                    Redirect: window.location.pathname + window.location.search,
+                };
+
+                const token = this.getToken();
+                if (token) {
+                    headers["Authorization"] = token;
+                }
+
+                try {
+                    const response = await fetch("https://api.peerwave.ai/api/chat/stream", {
+                        method: "POST",
+                        headers,
+                        body: JSON.stringify({
+                            model: "fastest", // Use fastest model for real-time analysis
+                            messages: [
+                                {
+                                    role: "user",
+                                    content: prompt,
+                                },
+                            ],
+                        }),
+                    });
+
+                    if (!response.ok) {
+                        const location = response.headers.get("Location");
+                        if (location) {
+                            // Redirect to Peerwave auth
+                            window.location.href = location;
+                            return;
+                        }
+                        throw new Error(`Failed to get AI analysis: ${response.status} ${await response.text()}`);
+                    }
+
+                    // Handle streaming response
+                    if (response.body) {
+                        const reader = response.body.getReader();
+                        const decoder = new TextDecoder();
+                        let fullResponse = '';
+
+                        try {
+                            let loopDone = false;
+                            while (!loopDone) {
+                                const { done, value } = await reader.read();
+                                if (done) {
+                                    loopDone = true;
+                                    break;
+                                }
+                                const chunk = decoder.decode(value, { stream: true });
+                                const lines = chunk.split("\n");
+                                
+                                for (const line of lines) {
+                                    const cleaned = line.trim();
+                                    if (cleaned === "") continue;
+                                    
+                                    try {
+                                        const parsedLine = JSON.parse(cleaned);
+                                        const content = parsedLine?.message?.content;
+                                        if (content) {
+                                            fullResponse += content;
+                                            onChunk(content);
+                                        }
+                                    } catch {
+                                        continue;
+                                    }
+                                }
+                            }
+                            
+                            this.updateAIStatus('connected', 'AI Analysis Complete');
+                            if (onComplete) onComplete(fullResponse);
+                        } finally {
+                            reader.releaseLock();
+                        }
+                    }
+                } catch (error) {
+                    this.updateAIStatus('error', 'AI Analysis Error');
+                    if (onError) onError(error);
+                    console.error('Peerwave AI Error:', error);
+                } finally {
+                    this.isStreaming = false;
+                }
+            }
+
+            updateAIStatus(status, text) {
+                const indicator = document.getElementById('aiStatus');
+                const statusText = document.getElementById('aiStatusText');
+                
+                indicator.className = `status-indicator ${status}`;
+                statusText.textContent = text;
+            }
+
+            generateDraftAnalysisPrompt(calibrationData, leagueSettings) {
+                const choicesSummary = calibrationData.map(choice => 
+                    `Chose ${choice.playerChosen.name} (${choice.playerChosen.position}) over ${choice.playerRejected.name} (${choice.playerRejected.position})`
+                ).join('; ');
+
+                return `You are an expert fantasy football analyst. Analyze these draft decisions and provide insights:
+
+LEAGUE SETTINGS: ${leagueSettings.pprFormat} PPR, ${leagueSettings.teamCount} teams, ${leagueSettings.draftPlatform} platform
+
+DRAFT DECISIONS: ${choicesSummary}
+
+Provide analysis in this format:
+1. **Statistical Preferences**: What metrics drive their decisions most?
+2. **Blind Spots**: What important factors do they consistently undervalue?
+3. **Cross-Position Patterns**: How do their preferences translate across RB/WR/TE?
+4. **Draft Strategy**: What type of draft approach fits their preferences?
+
+Keep response concise but insightful, focusing on actionable patterns.`;
+            }
+
+            generatePlayerRecommendationPrompt(preferences, draftedPlayers = []) {
+                const drafted = draftedPlayers.length ? `Already drafted: ${draftedPlayers.join(', ')}` : 'No players drafted yet';
+                
+                return `Based on the fantasy draft preferences analysis: ${preferences}
+
+${drafted}
+
+Recommend 3-5 specific players that match their revealed statistical preferences. For each recommendation:
+- Player name and position
+- Why they fit the preference pattern
+- Key stats that align with their biases
+- Draft value insight
+
+Focus on actionable recommendations for their next picks.`;
+            }
+        }
+
+        // Initialize AI
+        const ai = new PeerwaveAI();
+
+        // Check authentication on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = ai.getToken();
+            if (!token) {
+                // Redirect to Peerwave authentication
+                redirectToPeerwaveAuth();
+            } else {
+                initializeApp();
+            }
+        });
+
+        function redirectToPeerwaveAuth() {
+            // Show authentication required message
+            document.body.innerHTML = `
+                <div class="container" style="text-align: center; padding-top: 100px;">
+                    <div class="phase-content">
+                        <h1 style="background: linear-gradient(45deg, #f093fb 0%, #f5576c 50%, #4facfe 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Fantasy Football Preference Engine</h1>
+                        <div style="margin: 40px 0;">
+                            <div class="status-indicator error" style="margin: 0 auto 20px;"></div>
+                            <h3>Peerwave Authentication Required</h3>
+                            <p style="margin: 20px 0; opacity: 0.9;">This app requires Peerwave credits to provide AI-powered draft analysis.</p>
+                            <p style="margin: 20px 0; opacity: 0.9;">Click below to authenticate with your Peerwave account.</p>
+                            <button class="btn" onclick="initiateAuth()">Login with Peerwave</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function initiateAuth() {
+            // Trigger authentication flow by making a request that will return 402
+            fetch("https://api.peerwave.ai/api/chat/stream", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Redirect: window.location.pathname + window.location.search,
+                },
+                body: JSON.stringify({
+                    model: "fastest",
+                    messages: [{ role: "user", content: "auth check" }],
+                }),
+            }).then(response => {
+                if (!response.ok) {
+                    const location = response.headers.get("Location");
+                    if (location) {
+                        window.location.href = location;
+                    }
+                }
+            });
+        }
+
+        // 2025 Player Database (same as original)
+        const playerDatabase = [
+            // RBs - Elite Tier
+            { name: "Bijan Robinson", position: "RB", overallADP: 3, posADP: 1, team: "ATL",
+              volume: { carries: 214, targets: 58, snaps: 682, totalTouches: 272 },
+              efficiency: { ypc: 4.6, yprec: 6.8, snapShare: 68 },
+              opportunity: { redZoneCarries: 12, goalLineTouch: 8, passingDownSnaps: 62 },
+              team: { offRank: 12, olineRank: 18, qbRating: 89, gameScript: 52 }},
+
+            { name: "Jahmyr Gibbs", position: "RB", overallADP: 5, posADP: 2, team: "DET",
+              volume: { carries: 250, targets: 52, snaps: 645, totalTouches: 302 },
+              efficiency: { ypc: 5.2, yprec: 9.9, snapShare: 64 },
+              opportunity: { redZoneCarries: 14, goalLineTouch: 16, passingDownSnaps: 55 },
+              team: { offRank: 3, olineRank: 8, qbRating: 96, gameScript: 54 }},
+
+            { name: "Saquon Barkley", position: "RB", overallADP: 8, posADP: 3, team: "PHI",
+              volume: { carries: 345, targets: 43, snaps: 750, totalTouches: 388 },
+              efficiency: { ypc: 5.8, yprec: 6.5, snapShare: 75 },
+              opportunity: { redZoneCarries: 18, goalLineTouch: 15, passingDownSnaps: 58 },
+              team: { offRank: 5, olineRank: 3, qbRating: 94, gameScript: 51 }},
+
+            { name: "Josh Jacobs", position: "RB", overallADP: 22, posADP: 10, team: "GB",
+              volume: { carries: 279, targets: 35, snaps: 680, totalTouches: 314 },
+              efficiency: { ypc: 4.8, yprec: 7.1, snapShare: 68 },
+              opportunity: { redZoneCarries: 18, goalLineTouch: 14, passingDownSnaps: 32 },
+              team: { offRank: 18, olineRank: 16, qbRating: 93, gameScript: 60 }},
+
+            // WRs - Elite Tier
+            { name: "Ja'Marr Chase", position: "WR", overallADP: 1, posADP: 1, team: "CIN",
+              volume: { targets: 145, catches: 100, snaps: 920, airYards: 1820 },
+              efficiency: { ypr: 17.1, yac: 6.2, catchRate: 69 },
+              usage: { targetShare: 28, redZoneTargets: 15, slotRate: 35 },
+              team: { offRank: 10, olineRank: 21, qbRating: 92, gameScript: 62 }},
+
+            { name: "CeeDee Lamb", position: "WR", overallADP: 4, posADP: 2, team: "DAL",
+              volume: { targets: 181, catches: 135, snaps: 1020, airYards: 1654 },
+              efficiency: { ypr: 13.0, yac: 5.1, catchRate: 75 },
+              usage: { targetShare: 32, redZoneTargets: 18, slotRate: 62 },
+              team: { offRank: 9, olineRank: 15, qbRating: 88, gameScript: 60 }},
+
+            { name: "Amon-Ra St. Brown", position: "WR", overallADP: 9, posADP: 4, team: "DET",
+              volume: { targets: 165, catches: 119, snaps: 890, airYards: 1245 },
+              efficiency: { ypr: 10.6, yac: 5.8, catchRate: 72 },
+              usage: { targetShare: 29, redZoneTargets: 16, slotRate: 78 },
+              team: { offRank: 3, olineRank: 8, qbRating: 96, gameScript: 54 }},
+
+            // TEs
+            { name: "Brock Bowers", position: "TE", overallADP: 14, posADP: 1, team: "LV",
+              volume: { targets: 156, catches: 112, snaps: 890, airYards: 1142 },
+              efficiency: { ypr: 8.9, yac: 5.4, catchRate: 72 },
+              usage: { targetShare: 26, redZoneTargets: 12, slotRate: 68 },
+              team: { offRank: 22, olineRank: 25, qbRating: 78, gameScript: 52 }},
+
+            { name: "Sam LaPorta", position: "TE", overallADP: 20, posADP: 2, team: "DET",
+              volume: { targets: 121, catches: 86, snaps: 780, airYards: 987 },
+              efficiency: { ypr: 10.3, yac: 5.1, catchRate: 71 },
+              usage: { targetShare: 19, redZoneTargets: 12, slotRate: 62 },
+              team: { offRank: 3, olineRank: 8, qbRating: 96, gameScript: 54 }}
+        ];
+
+        function generateScenarios() {
+            scenarios = [];
+            usedPlayerPairs.clear();
+            
+            const sortedPlayers = [...playerDatabase].sort((a, b) => a.overallADP - b.overallADP);
+            let scenarioCount = 0;
+            const targetScenarios = 15; // Reduced for faster calibration
+            
+            for (let i = 0; i < sortedPlayers.length && scenarioCount < targetScenarios; i++) {
+                const playerA = sortedPlayers[i];
+                
+                for (let j = i + 1; j < sortedPlayers.length && scenarioCount < targetScenarios; j++) {
+                    const playerB = sortedPlayers[j];
+                    
+                    const isValidComparison = checkValidComparison(playerA, playerB);
+                    const pairKey = `${playerA.name}-${playerB.name}`;
+                    
+                    if (isValidComparison && !usedPlayerPairs.has(pairKey)) {
+                        usedPlayerPairs.add(pairKey);
+                        usedPlayerPairs.add(`${playerB.name}-${playerA.name}`);
+                        
+                        scenarios.push({
+                            context: generateDraftContext(playerA, playerB),
+                            playerA: playerA,
+                            playerB: playerB,
+                            comparisonType: getComparisonType(playerA, playerB)
+                        });
+                        
+                        scenarioCount++;
+                    }
+                }
+            }
+            
+            scenarios.sort(() => 0.5 - Math.random());
+        }
+
+        function checkValidComparison(playerA, playerB) {
+            if (playerA.position === playerB.position) {
+                return Math.abs(playerA.posADP - playerB.posADP) <= 10;
+            }
+            return Math.abs(playerA.overallADP - playerB.overallADP) <= 10;
+        }
+
+        function generateDraftContext(playerA, playerB) {
+            if (playerA.position === playerB.position) {
+                return `${playerA.position} Decision - Similar positional ranking, different statistical profiles`;
+            } else {
+                return `Cross-Position Choice - Pick ${Math.min(playerA.overallADP, playerB.overallADP)}-${Math.max(playerA.overallADP, playerB.overallADP)} range`;
+            }
+        }
+
+        function getComparisonType(playerA, playerB) {
+            if (playerA.position === playerB.position) {
+                return `${playerA.position}_position_comparison`;
+            } else {
+                return 'cross_position_comparison';
+            }
+        }
+
+        function updatePhaseIndicator(phase) {
+            document.querySelectorAll('.phase-dot').forEach((dot, index) => {
+                dot.classList.remove('active', 'complete');
+                if (index < phase) dot.classList.add('complete');
+                else if (index === phase) dot.classList.add('active');
+            });
+        }
+
+        function showPhase(phase) {
+            document.querySelectorAll('.phase-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            const phases = ['setup', 'calibration', 'report', 'draft'];
+            document.getElementById(`phase-${phases[phase]}`).classList.remove('hidden');
+            
+            updatePhaseIndicator(phase);
+            currentPhase = phase;
+        }
+
+        function startCalibration() {
+            leagueSettings = {
+                draftPlatform: document.getElementById('draftPlatform').value,
+                pprFormat: document.getElementById('pprFormat').value,
+                teamCount: document.getElementById('teamCount').value,
+                startingRB: document.getElementById('startingRB').value,
+                startingWR: document.getElementById('startingWR').value,
+                flexPositions: document.getElementById('flexPositions').value
+            };
+
+            generateScenarios();
+            showPhase(1);
+            displayCurrentScenario();
+        }
+
+        function displayCurrentScenario() {
+            if (currentScenario >= scenarios.length) {
+                generateReport();
+                return;
+            }
+
+            const scenario = scenarios[currentScenario];
+            const container = document.getElementById('scenarioContainer');
+            
+            container.innerHTML = `
+                <div class="scenario-card">
+                    <div class="scenario-header">
+                        <div class="draft-context">${scenario.context}</div>
+                        <h3>Which Player Do You Draft?</h3>
+                    </div>
+                    <div class="adp-info">
+                        <strong>Overall ADP:</strong> ${scenario.playerA.name} (#${scenario.playerA.overallADP}) vs ${scenario.playerB.name} (#${scenario.playerB.overallADP})
+                        <br><strong>Position Ranks:</strong> ${scenario.playerA.position}${scenario.playerA.posADP} vs ${scenario.playerB.position}${scenario.playerB.posADP}
+                    </div>
+                    <div class="player-comparison">
+                        <div class="player-card" onclick="selectPlayer('A')" id="playerA">
+                            <div class="player-header">
+                                <div class="player-name">${scenario.playerA.name}</div>
+                                <div class="adp-badge">#${scenario.playerA.overallADP}</div>
+                            </div>
+                            <div class="player-team">${scenario.playerA.team} • ${scenario.playerA.position}</div>
+                            <div class="key-stats">
+                                <div class="key-stats-title">Key Volume & Efficiency Stats</div>
+                                <div class="stats-grid">
+                                    ${generateKeyStats(scenario.playerA)}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vs-divider">VS</div>
+                        <div class="player-card" onclick="selectPlayer('B')" id="playerB">
+                            <div class="player-header">
+                                <div class="player-name">${scenario.playerB.name}</div>
+                                <div class="adp-badge">#${scenario.playerB.overallADP}</div>
+                            </div>
+                            <div class="player-team">${scenario.playerB.team} • ${scenario.playerB.position}</div>
+                            <div class="key-stats">
+                                <div class="key-stats-title">Key Volume & Efficiency Stats</div>
+                                <div class="stats-grid">
+                                    ${generateKeyStats(scenario.playerB)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="skip-btn" onclick="skipScenario()">Skip This Decision</button>
+                </div>
+            `;
+
+            const progress = ((currentScenario + 1) / scenarios.length) * 100;
+            document.getElementById('calibrationProgress').style.width = `${progress}%`;
+            document.getElementById('currentQuestion').textContent = currentScenario + 1;
+            document.getElementById('totalQuestions').textContent = scenarios.length;
+
+            // Show AI analysis section after a few decisions
+            if (currentScenario >= 3) {
+                document.getElementById('aiAnalysisSection').style.display = 'block';
+                triggerLiveAnalysis();
+            }
+        }
+
+        function triggerLiveAnalysis() {
+            if (calibrationData.length >= 3) {
+                const recentDecisions = calibrationData.slice(-3);
+                const prompt = `Analyze these recent fantasy draft decisions for emerging patterns:
+
+${recentDecisions.map((choice, idx) => 
+    `Decision ${idx + 1}: Chose ${choice.playerChosen.name} (${choice.playerChosen.position}) over ${choice.playerRejected.name} (${choice.playerRejected.position})`
+).join('\n')}
+
+Provide a brief 2-3 sentence insight about what statistical preferences are emerging. Keep it concise and actionable.`;
+
+                const streamingElement = document.getElementById('aiStreamingText');
+                streamingElement.textContent = '';
+
+                ai.streamAnalysis(prompt, (chunk) => {
+                    streamingElement.textContent += chunk;
+                });
+            }
+        }
+
+        function generateKeyStats(player) {
+            if (player.position === 'RB') {
+                return `
+                    <div class="stat-row"><span class="stat-label">Carries:</span><span class="stat-value">${player.volume.carries}</span></div>
+                    <div class="stat-row"><span class="stat-label">Targets:</span><span class="stat-value">${player.volume.targets}</span></div>
+                    <div class="stat-row"><span class="stat-label">YPC:</span><span class="stat-value">${player.efficiency.ypc}</span></div>
+                    <div class="stat-row"><span class="stat-label">Snap Share:</span><span class="stat-value">${player.efficiency.snapShare}%</span></div>
+                    <div class="stat-row"><span class="stat-label">RZ Carries:</span><span class="stat-value">${player.opportunity.redZoneCarries}</span></div>
+                    <div class="stat-row"><span class="stat-label">Off Rank:</span><span class="stat-value">${player.team.offRank}</span></div>
+                `;
+            } else if (player.position === 'WR') {
+                return `
+                    <div class="stat-row"><span class="stat-label">Targets:</span><span class="stat-value">${player.volume.targets}</span></div>
+                    <div class="stat-row"><span class="stat-label">Catches:</span><span class="stat-value">${player.volume.catches}</span></div>
+                    <div class="stat-row"><span class="stat-label">YPR:</span><span class="stat-value">${player.efficiency.ypr}</span></div>
+                    <div class="stat-row"><span class="stat-label">Target %:</span><span class="stat-value">${player.usage.targetShare}%</span></div>
+                    <div class="stat-row"><span class="stat-label">Slot %:</span><span class="stat-value">${player.usage.slotRate}%</span></div>
+                    <div class="stat-row"><span class="stat-label">QB Rating:</span><span class="stat-value">${player.team.qbRating}</span></div>
+                `;
+            } else { // TE
+                return `
+                    <div class="stat-row"><span class="stat-label">Targets:</span><span class="stat-value">${player.volume.targets}</span></div>
+                    <div class="stat-row"><span class="stat-label">Catches:</span><span class="stat-value">${player.volume.catches}</span></div>
+                    <div class="stat-row"><span class="stat-label">YPR:</span><span class="stat-value">${player.efficiency.ypr}</span></div>
+                    <div class="stat-row"><span class="stat-label">Target %:</span><span class="stat-value">${player.usage.targetShare}%</span></div>
+                    <div class="stat-row"><span class="stat-label">RZ Targets:</span><span class="stat-value">${player.usage.redZoneTargets}</span></div>
+                    <div class="stat-row"><span class="stat-label">Off Rank:</span><span class="stat-value">${player.team.offRank}</span></div>
+                `;
+            }
+        }
+
+        function selectPlayer(choice) {
+            const scenario = scenarios[currentScenario];
+            
+            calibrationData.push({
+                scenario: currentScenario,
+                context: scenario.context,
+                comparisonType: scenario.comparisonType,
+                choice: choice,
+                playerChosen: choice === 'A' ? scenario.playerA : scenario.playerB,
+                playerRejected: choice === 'A' ? scenario.playerB : scenario.playerA
+            });
+
+            document.getElementById(`player${choice}`).classList.add('selected');
+            
+            setTimeout(() => {
+                currentScenario++;
+                displayCurrentScenario();
+            }, 800);
+        }
+
+        function skipScenario() {
+            currentScenario++;
+            displayCurrentScenario();
+        }
+
+        function generateReport() {
+            showPhase(2);
+            
+            // Generate comprehensive AI analysis
+            const prompt = ai.generateDraftAnalysisPrompt(calibrationData, leagueSettings);
+            const analysisElement = document.getElementById('finalAiAnalysis');
+            analysisElement.textContent = '';
+
+            ai.streamAnalysis(prompt, (chunk) => {
+                analysisElement.textContent += chunk;
+            }, (fullResponse) => {
+                // After analysis is complete, generate player recommendations
+                setTimeout(() => generatePlayerRecommendations(fullResponse), 1000);
+            });
+        }
+
+        function generatePlayerRecommendations(preferences) {
+            const prompt = ai.generatePlayerRecommendationPrompt(preferences);
+            const matchesContainer = document.getElementById('playerMatches');
+            
+            matchesContainer.innerHTML = '<div style="text-align: center; color: #ffd93d;">🤖 Generating AI player recommendations...</div>';
+
+            ai.streamAnalysis(prompt, (chunk) => {
+                // For streaming recommendations, we'll update the entire container
+                matchesContainer.innerHTML = `<div style="white-space: pre-wrap; line-height: 1.6; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 10px;">${matchesContainer.textContent + chunk}</div>`;
+            });
+        }
+
+        function enterDraftMode() {
+            showPhase(3);
+        }
+
+        let draftedPlayers = [];
+
+        function addDraftedPlayer() {
+            const playerName = document.getElementById('playerSearch').value;
+            if (!playerName) return;
+
+            draftedPlayers.push(playerName);
+            
+            const currentTeam = document.getElementById('currentTeam');
+            if (currentTeam.textContent.includes('No players')) {
+                currentTeam.innerHTML = '';
+            }
+            
+            const playerDiv = document.createElement('div');
+            playerDiv.style.padding = '8px';
+            playerDiv.style.background = 'rgba(255,255,255,0.1)';
+            playerDiv.style.borderRadius = '8px';
+            playerDiv.style.marginBottom = '5px';
+            playerDiv.textContent = playerName;
+            currentTeam.appendChild(playerDiv);
+
+            // Generate AI recommendations for next pick
+            generateDraftRecommendations();
+            document.getElementById('playerSearch').value = '';
+        }
+
+        function generateDraftRecommendations() {
+            const analysisElement = document.getElementById('draftAiAnalysis');
+            const prompt = `Based on the user's draft preferences and current team (${draftedPlayers.join(', ')}), provide 2-3 specific next pick recommendations. Consider their statistical preferences and team needs. Keep it concise and actionable.`;
+
+            analysisElement.textContent = '';
+            ai.streamAnalysis(prompt, (chunk) => {
+                analysisElement.textContent += chunk;
+            });
+        }
+
+        // Initialize the authenticated app
+        function initializeApp() {
+            ai.updateAIStatus('connected', 'Peerwave AI Connected');
+            showPhase(0);
+        }
+    </script>
+</body>
+</html>
